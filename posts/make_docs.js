@@ -165,7 +165,7 @@ const linkedinChildren = [
 
   new Paragraph({
     spacing: { before: 180, after: 40 },
-    children: [new TextRun({ text: 'Dashboard with charts, audio samples, and raw data: https://dashboard-tts.vercel.app', italics: true })],
+    children: [new TextRun({ text: 'Dashboard with charts, audio samples, and raw data: https://dashboard-gemini-tts.vercel.app', italics: true })],
   }),
   new Paragraph({
     spacing: { before: 0, after: 0 },
@@ -236,7 +236,7 @@ const xChildren = [
   p('Google knows neither wins alone. They\'re shipping both so builders route per turn, not per philosophy.'),
   new Paragraph({
     spacing: { before: 100, after: 0 },
-    children: [new TextRun({ text: 'Dashboard: https://dashboard-tts.vercel.app', italics: true })],
+    children: [new TextRun({ text: 'Dashboard: https://dashboard-gemini-tts.vercel.app', italics: true })],
   }),
   new Paragraph({
     spacing: { before: 0, after: 120 },
@@ -335,7 +335,7 @@ const linkedinHtml = htmlShell('Gemini Flash TTS, tested', `
 
 <p>Google's release cadence is the tell. Flash Live three weeks ago. Flash TTS this week. Both first-party. Google knows neither wins alone. They're shipping both so builders route per turn, not per philosophy.</p>
 
-<p style="margin-top: 22px;"><i>Dashboard with charts, audio samples, and raw data: https://dashboard-tts.vercel.app</i></p>
+<p style="margin-top: 22px;"><i>Dashboard with charts, audio samples, and raw data: https://dashboard-gemini-tts.vercel.app</i></p>
 <p>Prior work: <a href="https://github.com/renuyadav972/gemini-s2s">https://github.com/renuyadav972/gemini-s2s</a></p>
 `);
 
@@ -381,7 +381,7 @@ Multi-speaker: 3 voice pairs, all sounded like the same voice modulating.</p>
 <div class="tweet-num">6/</div>
 <p>Google's cadence is the tell. Flash Live three weeks ago. Flash TTS this week. Both first-party.</p>
 <p>Google knows neither wins alone. They're shipping both so builders route per turn, not per philosophy.</p>
-<p>Dashboard: https://dashboard-tts.vercel.app<br/>
+<p>Dashboard: https://dashboard-gemini-tts.vercel.app<br/>
 Prior: <a href="https://github.com/renuyadav972/gemini-s2s">https://github.com/renuyadav972/gemini-s2s</a></p>
 
 <h2>Option C. Short single observation</h2>

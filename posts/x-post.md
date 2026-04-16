@@ -51,7 +51,7 @@ Google's cadence is the tell. Flash Live three weeks ago. Flash TTS this week. B
 
 Google knows neither wins alone. They're shipping both so builders route per turn, not per philosophy.
 
-Dashboard: https://dashboard-tts.vercel.app
+Dashboard: https://dashboard-gemini-tts.vercel.app
 Prior: https://github.com/renuyadav972/gemini-s2s
 
 ## Option C. Short single observation
