@@ -1,0 +1,450 @@
+{
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Aoede",
+  "generated_at": "2026-04-16T18:57:30Z",
+  "tests": {
+    "latency": {
+      "prompt": "Hi there. I am a short test prompt used to measure latency. Please return audio quickly so we can benchmark you.",
+      "iterations_requested": 30,
+      "iterations_successful": 30,
+      "first_chunk_ms": {
+        "count": 30,
+        "min": 647.0,
+        "p50": 695.5,
+        "p90": 788.5,
+        "p99": 1121.7,
+        "max": 1246.4,
+        "mean": 730.5,
+        "stdev": 105.4
+      },
+      "total_ms": {
+        "count": 30,
+        "min": 4401.2,
+        "p50": 4739.8,
+        "p90": 5088.3,
+        "p99": 5643.8,
+        "max": 5652.5,
+        "mean": 4804.2,
+        "stdev": 306.6
+      },
+      "real_time_factor": {
+        "count": 30,
+        "min": 1.4,
+        "p50": 1.6,
+        "p90": 1.6,
+        "p99": 1.6,
+        "max": 1.6,
+        "mean": 1.6,
+        "stdev": 0.1
+      },
+      "runs": [
+        {
+          "iteration": 1,
+          "first_chunk_ms": 1246.4,
+          "total_ms": 5652.5,
+          "chunks": 191,
+          "audio_duration_s": 7.64,
+          "real_time_factor": 1.35
+        },
+        {
+          "iteration": 2,
+          "first_chunk_ms": 750.9,
+          "total_ms": 4954.4,
+          "chunks": 191,
+          "audio_duration_s": 7.64,
+          "real_time_factor": 1.54
+        },
+        {
+          "iteration": 3,
+          "first_chunk_ms": 757.3,
+          "total_ms": 4768.8,
+          "chunks": 189,
+          "audio_duration_s": 7.56,
+          "real_time_factor": 1.59
+        },
+        {
+          "iteration": 4,
+          "first_chunk_ms": 723.3,
+          "total_ms": 4861.8,
+          "chunks": 190,
+          "audio_duration_s": 7.6,
+          "real_time_factor": 1.56
+        },
+        {
+          "iteration": 5,
+          "first_chunk_ms": 707.3,
+          "total_ms": 5622.4,
+          "chunks": 190,
+          "audio_duration_s": 7.6,
+          "real_time_factor": 1.35
+        },
+        {
+          "iteration": 6,
+          "first_chunk_ms": 694.2,
+          "total_ms": 4686.8,
+          "chunks": 191,
+          "audio_duration_s": 7.64,
+          "real_time_factor": 1.63
+        },
+        {
+          "iteration": 7,
+          "first_chunk_ms": 809.6,
+          "total_ms": 4656.6,
+          "chunks": 187,
+          "audio_duration_s": 7.48,
+          "real_time_factor": 1.61
+        },
+        {
+          "iteration": 8,
+          "first_chunk_ms": 669.8,
+          "total_ms": 4541.7,
+          "chunks": 181,
+          "audio_duration_s": 7.24,
+          "real_time_factor": 1.59
+        },
+        {
+          "iteration": 9,
+          "first_chunk_ms": 694.2,
+          "total_ms": 4615.1,
+          "chunks": 187,
+          "audio_duration_s": 7.48,
+          "real_time_factor": 1.62
+        },
+        {
+          "iteration": 10,
+          "first_chunk_ms": 692.5,
+          "total_ms": 4518.6,
+          "chunks": 181,
+          "audio_duration_s": 7.24,
+          "real_time_factor": 1.6
+        },
+        {
+          "iteration": 11,
+          "first_chunk_ms": 816.5,
+          "total_ms": 5029.8,
+          "chunks": 195,
+          "audio_duration_s": 7.8,
+          "real_time_factor": 1.55
+        },
+        {
+          "iteration": 12,
+          "first_chunk_ms": 786.1,
+          "total_ms": 4659.3,
+          "chunks": 185,
+          "audio_duration_s": 7.4,
+          "real_time_factor": 1.59
+        },
+        {
+          "iteration": 13,
+          "first_chunk_ms": 742.3,
+          "total_ms": 4669.4,
+          "chunks": 187,
+          "audio_duration_s": 7.48,
+          "real_time_factor": 1.6
+        },
+        {
+          "iteration": 14,
+          "first_chunk_ms": 696.9,
+          "total_ms": 4725.9,
+          "chunks": 190,
+          "audio_duration_s": 7.6,
+          "real_time_factor": 1.61
+        },
+        {
+          "iteration": 15,
+          "first_chunk_ms": 762.5,
+          "total_ms": 4665.6,
+          "chunks": 190,
+          "audio_duration_s": 7.6,
+          "real_time_factor": 1.63
+        },
+        {
+          "iteration": 16,
+          "first_chunk_ms": 784.5,
+          "total_ms": 5036.6,
+          "chunks": 201,
+          "audio_duration_s": 8.04,
+          "real_time_factor": 1.6
+        },
+        {
+          "iteration": 17,
+          "first_chunk_ms": 685.7,
+          "total_ms": 4759.8,
+          "chunks": 191,
+          "audio_duration_s": 7.64,
+          "real_time_factor": 1.61
+        },
+        {
+          "iteration": 18,
+          "first_chunk_ms": 685.8,
+          "total_ms": 4753.6,
+          "chunks": 190,
+          "audio_duration_s": 7.6,
+          "real_time_factor": 1.6
+        },
+        {
+          "iteration": 19,
+          "first_chunk_ms": 697.8,
+          "total_ms": 4401.2,
+          "chunks": 176,
+          "audio_duration_s": 7.04,
+          "real_time_factor": 1.6
+        },
+        {
+          "iteration": 20,
+          "first_chunk_ms": 659.1,
+          "total_ms": 4827.1,
+          "chunks": 192,
+          "audio_duration_s": 7.68,
+          "real_time_factor": 1.59
+        },
+        {
+          "iteration": 21,
+          "first_chunk_ms": 686.1,
+          "total_ms": 4489.6,
+          "chunks": 179,
+          "audio_duration_s": 7.16,
+          "real_time_factor": 1.59
+        },
+        {
+          "iteration": 22,
+          "first_chunk_ms": 654.9,
+          "total_ms": 4672.7,
+          "chunks": 189,
+          "audio_duration_s": 7.56,
+          "real_time_factor": 1.62
+        },
+        {
+          "iteration": 23,
+          "first_chunk_ms": 693.7,
+          "total_ms": 5553.9,
+          "chunks": 209,
+          "audio_duration_s": 8.36,
+          "real_time_factor": 1.51
+        },
+        {
+          "iteration": 24,
+          "first_chunk_ms": 691.8,
+          "total_ms": 4774.7,
+          "chunks": 195,
+          "audio_duration_s": 7.8,
+          "real_time_factor": 1.63
+        },
+        {
+          "iteration": 25,
+          "first_chunk_ms": 647.0,
+          "total_ms": 4580.6,
+          "chunks": 186,
+          "audio_duration_s": 7.44,
+          "real_time_factor": 1.62
+        },
+        {
+          "iteration": 26,
+          "first_chunk_ms": 664.5,
+          "total_ms": 4830.7,
+          "chunks": 186,
+          "audio_duration_s": 7.44,
+          "real_time_factor": 1.54
+        },
+        {
+          "iteration": 27,
+          "first_chunk_ms": 689.0,
+          "total_ms": 4678.9,
+          "chunks": 187,
+          "audio_duration_s": 7.48,
+          "real_time_factor": 1.6
+        },
+        {
+          "iteration": 28,
+          "first_chunk_ms": 718.7,
+          "total_ms": 4849.1,
+          "chunks": 190,
+          "audio_duration_s": 7.6,
+          "real_time_factor": 1.57
+        },
+        {
+          "iteration": 29,
+          "first_chunk_ms": 686.7,
+          "total_ms": 4491.8,
+          "chunks": 178,
+          "audio_duration_s": 7.12,
+          "real_time_factor": 1.59
+        },
+        {
+          "iteration": 30,
+          "first_chunk_ms": 720.6,
+          "total_ms": 4796.5,
+          "chunks": 192,
+          "audio_duration_s": 7.68,
+          "real_time_factor": 1.6
+        }
+      ]
+    },
+    "wer_roundtrip": {
+      "overall_wer": 0.2029,
+      "per_tag": [
+        {
+          "tag": "warm",
+          "reference": "Hello, thanks for calling. It's really nice to hear from you.",
+          "transcription": "hello thanks for calling it's really nice to hear from you",
+          "wer": 0.2727,
+          "wer_normalized": 0.0,
+          "reference_normalized": "hello thanks for calling it's really nice to hear from you",
+          "transcription_normalized": "hello thanks for calling it's really nice to hear from you"
+        },
+        {
+          "tag": "excited",
+          "reference": "Guess what? Your package just arrived at the front door!",
+          "transcription": "guess what your package just arrived at the front door",
+          "wer": 0.2,
+          "wer_normalized": 0.0,
+          "reference_normalized": "guess what your package just arrived at the front door",
+          "transcription_normalized": "guess what your package just arrived at the front door"
+        },
+        {
+          "tag": "apologetic",
+          "reference": "I'm so sorry, that wait was much longer than it should have been.",
+          "transcription": "i'm so sorry that wait was much longer than it should have been",
+          "wer": 0.1538,
+          "wer_normalized": 0.0,
+          "reference_normalized": "i'm so sorry that wait was much longer than it should have been",
+          "transcription_normalized": "i'm so sorry that wait was much longer than it should have been"
+        },
+        {
+          "tag": "whispers",
+          "reference": "Let me tell you something. I don't usually share this with everyone.",
+          "transcription": "let me tell you something i don't usually share this with everyone",
+          "wer": 0.1667,
+          "wer_normalized": 0.0,
+          "reference_normalized": "let me tell you something i don't usually share this with everyone",
+          "transcription_normalized": "let me tell you something i don't usually share this with everyone"
+        },
+        {
+          "tag": "laughs",
+          "reference": "That's a good one. I did not see that punchline coming.",
+          "transcription": "that's a good one i did not see that punchline coming",
+          "wer": 0.1818,
+          "wer_normalized": 0.0,
+          "reference_normalized": "that's a good one i did not see that punchline coming",
+          "transcription_normalized": "that's a good one i did not see that punchline coming"
+        },
+        {
+          "tag": "sighs",
+          "reference": "Alright, let me pull up your account and figure out what happened.",
+          "transcription": "all right let me pull up your account and figure out what happened",
+          "wer": 0.25,
+          "wer_normalized": 0.1667,
+          "reference_normalized": "alright let me pull up your account and figure out what happened",
+          "transcription_normalized": "all right let me pull up your account and figure out what happened"
+        }
+      ],
+      "stt_model": "chirp_2",
+      "stt_location": "us-central1",
+      "overall_wer_normalized": 0.029
+    },
+    "consistency": {
+      "prompt": "[warm] Hello, thanks for calling. I can help with what you need today.",
+      "iterations_requested": 10,
+      "iterations_successful": 10,
+      "duration_s": {
+        "stats": {
+          "count": 10,
+          "min": 3.8,
+          "p50": 4.0,
+          "p90": 4.2,
+          "p99": 4.2,
+          "max": 4.2,
+          "mean": 4.0,
+          "stdev": 0.1
+        },
+        "cv": 0.0285
+      },
+      "rms_energy": {
+        "stats": {
+          "count": 10,
+          "min": 0.1,
+          "p50": 0.1,
+          "p90": 0.1,
+          "p99": 0.1,
+          "max": 0.1,
+          "mean": 0.1,
+          "stdev": 0.0
+        },
+        "cv": 0.1065
+      },
+      "runs": [
+        {
+          "iteration": 1,
+          "first_chunk_ms": 683.7,
+          "audio_duration_s": 3.84,
+          "audio_bytes": 184320,
+          "rms_energy": 0.10798
+        },
+        {
+          "iteration": 2,
+          "first_chunk_ms": 734.0,
+          "audio_duration_s": 3.88,
+          "audio_bytes": 186240,
+          "rms_energy": 0.10661
+        },
+        {
+          "iteration": 3,
+          "first_chunk_ms": 868.1,
+          "audio_duration_s": 3.96,
+          "audio_bytes": 190080,
+          "rms_energy": 0.1103
+        },
+        {
+          "iteration": 4,
+          "first_chunk_ms": 738.6,
+          "audio_duration_s": 3.96,
+          "audio_bytes": 190080,
+          "rms_energy": 0.08241
+        },
+        {
+          "iteration": 5,
+          "first_chunk_ms": 640.3,
+          "audio_duration_s": 4.0,
+          "audio_bytes": 192000,
+          "rms_energy": 0.09484
+        },
+        {
+          "iteration": 6,
+          "first_chunk_ms": 636.8,
+          "audio_duration_s": 4.2,
+          "audio_bytes": 201600,
+          "rms_energy": 0.08706
+        },
+        {
+          "iteration": 7,
+          "first_chunk_ms": 718.0,
+          "audio_duration_s": 4.2,
+          "audio_bytes": 201600,
+          "rms_energy": 0.10868
+        },
+        {
+          "iteration": 8,
+          "first_chunk_ms": 656.3,
+          "audio_duration_s": 3.96,
+          "audio_bytes": 190080,
+          "rms_energy": 0.10593
+        },
+        {
+          "iteration": 9,
+          "first_chunk_ms": 731.2,
+          "audio_duration_s": 4.08,
+          "audio_bytes": 195840,
+          "rms_energy": 0.09849
+        },
+        {
+          "iteration": 10,
+          "first_chunk_ms": 816.6,
+          "audio_duration_s": 4.0,
+          "audio_bytes": 192000,
+          "rms_energy": 0.0829
+        }
+      ]
+    }
+  },
+  "elapsed_s": 177.9
+}

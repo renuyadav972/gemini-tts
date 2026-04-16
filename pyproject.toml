@@ -1,0 +1,24 @@
+[project]
+name = "gemini-tts"
+version = "0.1.0"
+description = "Gemini 3.1 Flash Live (native S2S) vs cascaded Deepgram + Gemini LLM + Gemini 3.1 Flash TTS, over Plivo telephony"
+requires-python = ">=3.11"
+dependencies = [
+    "pipecat-ai[google,deepgram,silero]>=0.0.95",
+    "google-cloud-texttospeech>=2.27.0",
+    "python-dotenv>=1.0.0",
+    "loguru",
+    "httpx",
+    "fastapi",
+    "uvicorn[standard]",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# This project is a collection of top-level scripts, not an importable
+# package. Tell setuptools not to auto-discover the research/ posts/ data/
+# folders as packages.
+py-modules = ["metrics_observer", "agent_native", "agent_cascaded_google"]

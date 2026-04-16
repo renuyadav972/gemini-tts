@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+data/sessions/
+data/samples/
+derisk_output.wav
+posts/*.docx
+posts/*.html
+.DS_Store
