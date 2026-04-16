@@ -30,5 +30,5 @@ Auth. The 3.1 preview needs Vertex AI API enabled, not just Cloud TTS. The 2.5 v
 Multi-speaker. Tested Puck+Kore, Fenrir+Leda, Charon+Leda. All three pairs sounded like the same voice slightly modulating.
 Google's release cadence is the tell. Flash Live three weeks ago. Flash TTS this week. Both first-party. Google knows neither wins alone. They're shipping both so builders route per turn, not per philosophy.
 
-Dashboard with charts, audio samples, and raw data: [dashboard URL]
+Dashboard with charts, audio samples, and raw data: https://dashboard-tts.vercel.app
 Prior work: https://github.com/renuyadav972/gemini-s2s

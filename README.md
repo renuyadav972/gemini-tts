@@ -5,7 +5,7 @@ Empirical test of Google's Gemini 3.1 Flash TTS Preview, run over real phone cal
 - **Cascaded agent**: Google Cloud STT (chirp_2) → Gemini 2.5 Flash LLM → Gemini 3.1 Flash TTS, all first-party Google.
 - **Baseline**: Gemini 3.1 Flash Live (native S2S) from [gemini-s2s](https://github.com/renuyadav972/gemini-s2s).
 
-Live dashboard with audio samples, charts, and raw data: [dashboard link]
+Live dashboard with audio samples, charts, and raw data: https://dashboard-tts.vercel.app
 
 ## How It Works
 
@@ -93,7 +93,7 @@ A few things stood out from running the TTS through phone audio and a 30-run ben
 - **Multi-speaker.** Tested three voice pairs. The two speakers sounded like the same voice slightly modulating.
 - **Auth friction.** The 3.1 preview needs Vertex AI API enabled, not just Cloud TTS. Three API enables for one model.
 
-Full writeup with audio samples: [dashboard link]
+Full writeup with audio samples: https://dashboard-tts.vercel.app
 
 ## License
 
