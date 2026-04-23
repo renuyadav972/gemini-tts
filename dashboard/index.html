@@ -337,8 +337,8 @@
   <div class="eyebrow">Empirical test results</div>
   <h1>Gemini 3.1 Flash TTS</h1>
   <p class="subtitle">
-    What we measured running Google's new TTS preview in a cascaded voice agent over real Plivo phone calls.
-    Raw numbers, audio samples, and the caveats.
+    We ran the same six sentences through Gemini Flash TTS, ElevenLabs Flash v2.5, and Cartesia Sonic 3.
+    Best voice from each provider, no audio tags, just plain text. Listen for yourself.
   </p>
 
   <div class="headline-stats">
@@ -351,83 +351,38 @@
 
 <!-- ===================== TABS ===================== -->
 <nav class="tabs" role="tablist">
-  <button class="active" data-tab="findings" role="tab">Findings</button>
+  <button class="active" data-tab="compare" role="tab">Compare voices</button>
   <button data-tab="stats" role="tab">Stats</button>
-  <button data-tab="samples" role="tab">Voice samples</button>
 </nav>
 
-<!-- ===================== TAB: FINDINGS ===================== -->
-<section id="findings" class="tab-panel active" role="tabpanel">
+<!-- ===================== TAB: COMPARE VOICES ===================== -->
+<section id="compare" class="tab-panel active" role="tabpanel">
+  <h3 style="margin-top: 0;">Same sentence, three providers. Listen.</h3>
+  <p class="muted">
+    Matched character across all three, warm/conversational female. Gemini: Aoede. ElevenLabs: Alexandra (their recommended agent voice). Cartesia: Katie (their recommended agent voice).
+    No audio tags, just plain text. Pay attention to pacing, pauses, and how each handles the emotion in the sentence.
+  </p>
 
-  <h3 style="margin-top: 0; margin-bottom: 14px;">What stood out</h3>
-  <div class="obs-grid">
-    <div class="obs">
-      <div class="num">1</div>
-      <h4>Mid-sentence shifts</h4>
-      <p>Most TTS treats prosody as an attribute on the whole sentence. Flash TTS treats it as an attribute on the segment. The voice drops to a whisper, then comes back up, inside the same utterance.</p>
-    </div>
-    <div class="obs">
-      <div class="num">2</div>
-      <h4>Non-verbal sounds</h4>
-      <p><code>[laughs]</code> is a real laugh, not the word. Same for <code>[sighs]</code>. The model generates the non-verbal sound itself. Audio libraries used to do this with pre-recorded splices.</p>
-    </div>
-    <div class="obs">
-      <div class="num">3</div>
-      <h4>Phone codec survival</h4>
-      <p>8 kHz μ-law on phone calls usually destroys prosody nuance. The whisper stayed a whisper at 8 kHz. That matters because phone audio is the production constraint most voice agents hit.</p>
-    </div>
-  </div>
+  <div id="compare-cards"></div>
 
-  <h3 style="margin-top: 40px;">Full findings</h3>
+  <h3 style="margin-top: 40px;">What the numbers show</h3>
   <div class="card accent-blue">
     <div class="table-wrap" style="border: none; box-shadow: none;">
       <table>
         <thead>
-          <tr>
-            <th style="width: 46%;">Finding</th>
-            <th style="width: 18%;">Verdict</th>
-            <th>Evidence</th>
-          </tr>
+          <tr><th>Metric</th><th>Gemini (Aoede)</th><th>ElevenLabs (Alexandra)</th><th>Cartesia (Katie)</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Audio tags render as real vocal expression</td>
-            <td><span class="chip chip-good">✓ works</span></td>
-            <td>Six tags tested. <code>[laughs]</code> is a real laugh, not the word.</td>
-          </tr>
-          <tr>
-            <td>Shifts are mid-sentence, not per-line</td>
-            <td><span class="chip chip-good">✓ works</span></td>
-            <td>SSML never really got this right. Flash TTS treats prosody as a per-segment attribute.</td>
-          </tr>
-          <tr>
-            <td>Intelligibility holds through phone codec</td>
-            <td><span class="chip chip-good">✓ works</span></td>
-            <td>Round-trip WER <b>2.9%</b>. 5 of 6 samples at 0% through Cloud STT.</td>
-          </tr>
-          <tr>
-            <td>First-chunk latency</td>
-            <td><span class="chip chip-warn">⚠ slow</span></td>
-            <td>p50 <b>696 ms</b>. Slower than ElevenLabs Flash (75 to 150 ms) or Cartesia Sonic 3 (40 to 90 ms).</td>
-          </tr>
-          <tr>
-            <td>Multi-speaker: distinct voices in one call</td>
-            <td><span class="chip chip-warn">⚠ narrow casting</span></td>
-            <td>3 voice pairs tested. Speakers sounded like the same voice slightly modulating.</td>
-          </tr>
-          <tr>
-            <td>Preview model auth path</td>
-            <td><span class="chip chip-info">needs Vertex AI</span></td>
-            <td>3.1 preview requires <code>aiplatform.googleapis.com</code>. The 2.5 version runs on vanilla Cloud TTS.</td>
-          </tr>
-          <tr>
-            <td>LLM self-contradiction in cascaded stack</td>
-            <td><span class="chip chip-warn">⚠ prompt-level</span></td>
-            <td>Gemini 2.5 Flash emitted <em>"[apologetic] I'm sorry, I'm not able to express emotions..."</em>. Used the tag, denied it verbally.</td>
-          </tr>
+          <tr><td>Avg duration (same text)</td><td><b>4.29s</b></td><td>2.92s</td><td>2.99s</td></tr>
+          <tr><td>Pause ratio</td><td>28.9%</td><td>24.1%</td><td>28.2%</td></tr>
+          <tr><td>Pause range across sentences</td><td>21–35%</td><td>18–32%</td><td>22–40%</td></tr>
+          <tr><td>Energy variation (CV)</td><td>0.597</td><td><b>0.762</b></td><td>0.614</td></tr>
         </tbody>
       </table>
     </div>
+    <p class="muted" style="margin-top: 12px; margin-bottom: 0;">
+      Gemini paces slowest (about 45% longer duration than the others) and pauses most, but the margin is narrower than it looked with default voices. Energy variation actually leads with ElevenLabs Alexandra, not Gemini. Cartesia Katie is the most consistent across sentences.
+    </p>
   </div>
 </section>
 
@@ -542,62 +497,6 @@
 
 </section>
 
-<!-- ===================== TAB: VOICE SAMPLES ===================== -->
-<section id="samples" class="tab-panel" role="tabpanel">
-  <h3 style="margin-top: 0;">Audio tag samples</h3>
-  <p class="muted">
-    Same voice (Aoede), neutral carrier sentence, one tag in the middle. Each rendered distinct over the 8 kHz μ-law phone codec.
-  </p>
-
-  <div class="audio-card">
-    <div class="top"><div class="name"><span class="tag">[warm]</span>warm</div><div class="meta">4.3 s · first chunk 1040 ms</div></div>
-    <div class="text">"[warm] Hello, thanks for calling. It's really nice to hear from you."</div>
-    <audio controls preload="metadata" src="samples/tag_warm.wav"></audio>
-  </div>
-  <div class="audio-card">
-    <div class="top"><div class="name"><span class="tag">[excited]</span>excited</div><div class="meta">4.2 s · first chunk 681 ms</div></div>
-    <div class="text">"Guess what? [excited] Your package just arrived at the front door!"</div>
-    <audio controls preload="metadata" src="samples/tag_excited.wav"></audio>
-  </div>
-  <div class="audio-card">
-    <div class="top"><div class="name"><span class="tag">[apologetic]</span>apologetic</div><div class="meta">4.7 s · first chunk 726 ms</div></div>
-    <div class="text">"[apologetic] I'm so sorry, that wait was much longer than it should have been."</div>
-    <audio controls preload="metadata" src="samples/tag_apologetic.wav"></audio>
-  </div>
-  <div class="audio-card">
-    <div class="top"><div class="name"><span class="tag">[whispers]</span>whispers</div><div class="meta">4.8 s · first chunk 747 ms</div></div>
-    <div class="text">"Let me tell you something. [whispers] I don't usually share this with everyone."</div>
-    <audio controls preload="metadata" src="samples/tag_whispers.wav"></audio>
-  </div>
-  <div class="audio-card">
-    <div class="top"><div class="name"><span class="tag">[laughs]</span>laughs</div><div class="meta">5.5 s · first chunk 601 ms</div></div>
-    <div class="text">"That's a good one. [laughs] I did not see that punchline coming."</div>
-    <audio controls preload="metadata" src="samples/tag_laughs.wav"></audio>
-  </div>
-  <div class="audio-card">
-    <div class="top"><div class="name"><span class="tag">[sighs]</span>sighs</div><div class="meta">4.1 s · first chunk 686 ms</div></div>
-    <div class="text">"[sighs] Alright, let me pull up your account and figure out what happened."</div>
-    <audio controls preload="metadata" src="samples/tag_sighs.wav"></audio>
-  </div>
-
-  <h3>Multi-speaker dialogue <span style="font-weight: 400; color: var(--text-muted); font-size: 16px;">(still testing)</span></h3>
-  <p class="muted">
-    Same 8-line dialogue script, three speaker pairs, one streaming API call each. Across all three pairings the two speakers sounded like the same person slightly modulating voice. Turn labels work. Voice casting is narrower than the announcement suggested.
-  </p>
-
-  <div class="audio-card accent-purple">
-    <div class="top"><div class="name">Puck + Kore</div><div class="meta">28.4 s · first chunk 1,071 ms</div></div>
-    <audio controls preload="metadata" src="samples/multi_speaker_demo.wav"></audio>
-  </div>
-  <div class="audio-card accent-purple">
-    <div class="top"><div class="name">Fenrir + Leda</div><div class="meta">28.9 s · first chunk 1,011 ms</div></div>
-    <audio controls preload="metadata" src="samples/multi_speaker_Fenrir_Leda.wav"></audio>
-  </div>
-  <div class="audio-card accent-purple">
-    <div class="top"><div class="name">Charon + Leda</div><div class="meta">27.0 s · first chunk 1,135 ms</div></div>
-    <audio controls preload="metadata" src="samples/multi_speaker_Charon_Leda.wav"></audio>
-  </div>
-</section>
 
 <!-- ===================== FOOTER ===================== -->
 <div class="footer">
@@ -611,6 +510,7 @@
 </div>
 
 <script>
+  // Tab switching
   document.querySelectorAll('.tabs button').forEach(btn => {
     btn.addEventListener('click', () => {
       const tab = btn.dataset.tab;
@@ -618,10 +518,45 @@
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById(tab).classList.add('active');
-      // Pause any playing audio when switching tabs
       document.querySelectorAll('audio').forEach(a => a.pause());
     });
   });
+
+
+  // Build comparison cards
+  (function() {
+    const compareSentences = [
+      { id: 'greeting',   text: '"Hello, thanks for calling. It is really nice to hear from you."', emotion: 'Warm' },
+      { id: 'excited',    text: '"Guess what? Your package just arrived at the front door!"', emotion: 'Excited' },
+      { id: 'apologetic', text: '"I am so sorry, that wait was much longer than it should have been."', emotion: 'Apologetic' },
+      { id: 'quiet',      text: '"Let me tell you something. I do not usually share this with everyone."', emotion: 'Quiet' },
+      { id: 'amused',     text: '"That is a good one. I did not see that punchline coming."', emotion: 'Amused' },
+      { id: 'resigned',   text: '"Alright, let me pull up your account and figure out what happened."', emotion: 'Resigned' },
+    ];
+    const providers = [
+      { key: 'gemini', label: 'Gemini (Aoede)', color: 'var(--plivo-blue)' },
+      { key: 'elevenlabs', label: 'ElevenLabs (Alexandra)', color: '#10B981' },
+      { key: 'cartesia', label: 'Cartesia (Katie)', color: 'var(--plivo-purple)' },
+    ];
+    const container = document.getElementById('compare-cards');
+    if (!container) return;
+    compareSentences.forEach(sent => {
+      let html = `<div class="card" style="margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <span class="chip chip-info">${sent.emotion}</span>
+          <span style="font-size:14px;color:var(--text-dim);font-style:italic;">${sent.text}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px;">`;
+      providers.forEach(p => {
+        html += `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;">
+          <div style="font-family:'Sora',sans-serif;font-weight:600;font-size:13px;color:${p.color};margin-bottom:8px;">${p.label}</div>
+          <audio controls preload="metadata" style="width:100%;height:36px;" src="samples/comparison/${p.key}_${sent.id}.wav"></audio>
+        </div>`;
+      });
+      html += '</div></div>';
+      container.innerHTML += html;
+    });
+  })();
 </script>
 
 </body>
