@@ -327,7 +327,7 @@
   <span class="sep">·</span>
   <span><code style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; background: rgba(255,255,255,0.12); padding: 2px 7px; border-radius: 4px;">gemini-3.1-flash-tts-preview</code></span>
   <span class="sep">·</span>
-  <a href="https://github.com/renuyadav972/gemini-s2s">View raw data →</a>
+  <a href="https://github.com/renuyadav972/gemini-tts">View raw data →</a>
 </div>
 <div class="bg-grid"></div>
 <div class="wrap">
@@ -337,8 +337,9 @@
   <div class="eyebrow">Empirical test results</div>
   <h1>Gemini 3.1 Flash TTS</h1>
   <p class="subtitle">
-    We ran the same six sentences through Gemini Flash TTS, ElevenLabs Flash v2.5, and Cartesia Sonic 3.
-    Best voice from each provider, no audio tags, just plain text. Listen for yourself.
+    We tested Gemini Flash TTS in production over Plivo telephony plus 30-run benchmarks.
+    Listen to what each feature actually does — inline tags, voice character, and how
+    Director's Notes shapes delivery on the same line of text.
   </p>
 
   <div class="headline-stats">
@@ -351,39 +352,46 @@
 
 <!-- ===================== TABS ===================== -->
 <nav class="tabs" role="tablist">
-  <button class="active" data-tab="compare" role="tab">Compare voices</button>
+  <button class="active" data-tab="tags" role="tab">Plain vs tagged</button>
+  <button data-tab="voices" role="tab">Voice character</button>
+  <button data-tab="directors" role="tab">Director's Notes</button>
   <button data-tab="stats" role="tab">Stats</button>
 </nav>
 
-<!-- ===================== TAB: COMPARE VOICES ===================== -->
-<section id="compare" class="tab-panel active" role="tabpanel">
-  <h3 style="margin-top: 0;">Same sentence, three providers. Listen.</h3>
+<!-- ===================== TAB: PLAIN VS TAGGED ===================== -->
+<section id="tags" class="tab-panel active" role="tabpanel">
+  <h3 style="margin-top: 0;">Same line, with and without an inline tag</h3>
   <p class="muted">
-    Matched character across all three, warm/conversational female. Gemini: Aoede. ElevenLabs: Alexandra (their recommended agent voice). Cartesia: Katie (their recommended agent voice).
-    No audio tags, just plain text. Pay attention to pacing, pauses, and how each handles the emotion in the sentence.
+    The transcript is identical across each pair. The only difference is whether an inline
+    audio tag like <code>[whispers]</code> or <code>[laughs]</code> sits inside the line.
+    Gemini reads the tag as a delivery instruction, not as a word. All audio is Aoede,
+    rendered through Cloud TTS streaming.
   </p>
+  <div id="tags-cards"></div>
+</section>
 
-  <div id="compare-cards"></div>
+<!-- ===================== TAB: VOICE CHARACTER ===================== -->
+<section id="voices" class="tab-panel" role="tabpanel">
+  <h3 style="margin-top: 0;">Same line, three voices</h3>
+  <p class="muted">
+    Gemini ships 30 prebuilt voices, each with a tonal descriptor. We picked three with
+    distinctly different descriptors and ran the same line through all three. The labels
+    aren't decoration — they correspond to real prosody differences.
+  </p>
+  <div id="voices-cards"></div>
+</section>
 
-  <h3 style="margin-top: 40px;">What the numbers show</h3>
-  <div class="card accent-blue">
-    <div class="table-wrap" style="border: none; box-shadow: none;">
-      <table>
-        <thead>
-          <tr><th>Metric</th><th>Gemini (Aoede)</th><th>ElevenLabs (Alexandra)</th><th>Cartesia (Katie)</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Avg duration (same text)</td><td><b>4.29s</b></td><td>2.92s</td><td>2.99s</td></tr>
-          <tr><td>Pause ratio</td><td>28.9%</td><td>24.1%</td><td>28.2%</td></tr>
-          <tr><td>Pause range across sentences</td><td>21–35%</td><td>18–32%</td><td>22–40%</td></tr>
-          <tr><td>Energy variation (CV)</td><td>0.597</td><td><b>0.762</b></td><td>0.614</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="muted" style="margin-top: 12px; margin-bottom: 0;">
-      Gemini paces slowest (about 45% longer duration than the others) and pauses most, but the margin is narrower than it looked with default voices. Energy variation actually leads with ElevenLabs Alexandra, not Gemini. Cartesia Katie is the most consistent across sentences.
-    </p>
-  </div>
+<!-- ===================== TAB: DIRECTOR'S NOTES ===================== -->
+<section id="directors" class="tab-panel" role="tabpanel">
+  <h3 style="margin-top: 0;">Same transcript, bare prompt vs structured prompt</h3>
+  <p class="muted">
+    Director's Notes is Gemini's structured prompt format for shaping delivery.
+    The transcript text is identical between bare and directed; only the surrounding
+    <b>Audio Profile</b>, <b>Scene</b>, and <b>Director's Notes</b> sections differ. The
+    <code>#### TRANSCRIPT</code> delimiter tells the model where instructions end and the
+    line to speak begins — without it, the model can read your stage directions aloud.
+  </p>
+  <div id="directors-cards"></div>
 </section>
 
 <!-- ===================== TAB: STATS ===================== -->
@@ -502,7 +510,7 @@
 <div class="footer">
   <p>
     All numbers above are from our own runs, not borrowed from Google's announcement or third-party benchmarks.
-    Raw JSON: <a class="link" href="https://github.com/renuyadav972/gemini-s2s/blob/main/data/metrics/flash_tts_tier1.json">flash_tts_tier1.json</a>.
+    Raw JSON: <a class="link" href="https://github.com/renuyadav972/gemini-tts/blob/main/data/metrics/flash_tts_tier1.json">flash_tts_tier1.json</a>.
     Test harness: <code>scripts/test_flash_tts.py</code>.
   </p>
 </div>
@@ -523,38 +531,102 @@
   });
 
 
-  // Build comparison cards
+  // Helper to build a labeled audio card
+  function audioCard(label, color, src) {
+    return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;">
+      <div style="font-family:'Sora',sans-serif;font-weight:600;font-size:13px;color:${color};margin-bottom:8px;">${label}</div>
+      <audio controls preload="metadata" style="width:100%;height:36px;" src="${src}"></audio>
+    </div>`;
+  }
+
+  // ----- Plain vs tagged -----
   (function() {
-    const compareSentences = [
-      { id: 'greeting',   text: '"Hello, thanks for calling. It is really nice to hear from you."', emotion: 'Warm' },
-      { id: 'excited',    text: '"Guess what? Your package just arrived at the front door!"', emotion: 'Excited' },
-      { id: 'apologetic', text: '"I am so sorry, that wait was much longer than it should have been."', emotion: 'Apologetic' },
-      { id: 'quiet',      text: '"Let me tell you something. I do not usually share this with everyone."', emotion: 'Quiet' },
-      { id: 'amused',     text: '"That is a good one. I did not see that punchline coming."', emotion: 'Amused' },
-      { id: 'resigned',   text: '"Alright, let me pull up your account and figure out what happened."', emotion: 'Resigned' },
+    const pairs = [
+      { plainSrc: 'samples/comparison/gemini_greeting.wav',   taggedSrc: 'samples/tag_warm.wav',       chip: '[warm]',       plainText: 'Hello, thanks for calling. It is really nice to hear from you.',                tagged: '[warm] Hello, thanks for calling. It is really nice to hear from you.' },
+      { plainSrc: 'samples/comparison/gemini_excited.wav',    taggedSrc: 'samples/tag_excited.wav',    chip: '[excited]',    plainText: 'Guess what? Your package just arrived at the front door!',                       tagged: 'Guess what? [excited] Your package just arrived at the front door!' },
+      { plainSrc: 'samples/comparison/gemini_apologetic.wav', taggedSrc: 'samples/tag_apologetic.wav', chip: '[apologetic]', plainText: 'I am so sorry, that wait was much longer than it should have been.',             tagged: '[apologetic] I am so sorry, that wait was much longer than it should have been.' },
+      { plainSrc: 'samples/comparison/gemini_quiet.wav',      taggedSrc: 'samples/tag_whispers.wav',   chip: '[whispers]',   plainText: 'Let me tell you something. I do not usually share this with everyone.',          tagged: 'Let me tell you something. [whispers] I do not usually share this with everyone.' },
+      { plainSrc: 'samples/comparison/gemini_amused.wav',     taggedSrc: 'samples/tag_laughs.wav',     chip: '[laughs]',     plainText: 'That is a good one. I did not see that punchline coming.',                       tagged: 'That is a good one. [laughs] I did not see that punchline coming.' },
+      { plainSrc: 'samples/comparison/gemini_resigned.wav',   taggedSrc: 'samples/tag_sighs.wav',      chip: '[sighs]',      plainText: 'Alright, let me pull up your account and figure out what happened.',            tagged: '[sighs] Alright, let me pull up your account and figure out what happened.' },
     ];
-    const providers = [
-      { key: 'gemini', label: 'Gemini (Aoede)', color: 'var(--plivo-blue)' },
-      { key: 'elevenlabs', label: 'ElevenLabs (Alexandra)', color: '#10B981' },
-      { key: 'cartesia', label: 'Cartesia (Katie)', color: 'var(--plivo-purple)' },
-    ];
-    const container = document.getElementById('compare-cards');
-    if (!container) return;
-    compareSentences.forEach(sent => {
-      let html = `<div class="card" style="margin-bottom:14px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-          <span class="chip chip-info">${sent.emotion}</span>
-          <span style="font-size:14px;color:var(--text-dim);font-style:italic;">${sent.text}</span>
+    const c = document.getElementById('tags-cards');
+    if (!c) return;
+    pairs.forEach(p => {
+      c.innerHTML += `<div class="card" style="margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">
+          <span class="chip chip-info">${p.chip}</span>
+          <span style="font-size:13px;color:var(--text-muted);">Plain text vs same line with the tag inserted</span>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px;">`;
-      providers.forEach(p => {
-        html += `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;">
-          <div style="font-family:'Sora',sans-serif;font-weight:600;font-size:13px;color:${p.color};margin-bottom:8px;">${p.label}</div>
-          <audio controls preload="metadata" style="width:100%;height:36px;" src="samples/comparison/${p.key}_${sent.id}.wav"></audio>
-        </div>`;
-      });
-      html += '</div></div>';
-      container.innerHTML += html;
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:14px;">
+          <div>
+            ${audioCard('Plain text', 'var(--plivo-blue)', p.plainSrc)}
+            <div style="font-size:12.5px;color:var(--text-dim);font-style:italic;margin-top:6px;">"${p.plainText}"</div>
+          </div>
+          <div>
+            ${audioCard('With ' + p.chip, 'var(--plivo-purple)', p.taggedSrc)}
+            <div style="font-size:12.5px;color:var(--text-dim);font-style:italic;margin-top:6px;">"${p.tagged}"</div>
+          </div>
+        </div>
+      </div>`;
+    });
+  })();
+
+  // ----- Voice character -----
+  (function() {
+    const line = '"How can I help you today?"';
+    const voices = [
+      { key: 'Aoede',  descriptor: 'Breezy',      color: 'var(--plivo-blue)' },
+      { key: 'Charon', descriptor: 'Informative', color: '#10B981' },
+      { key: 'Puck',   descriptor: 'Upbeat',      color: 'var(--plivo-purple)' },
+    ];
+    const c = document.getElementById('voices-cards');
+    if (!c) return;
+    let html = `<div class="card">
+      <div style="font-size:14px;color:var(--text-dim);font-style:italic;margin-bottom:14px;">Line: ${line}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">`;
+    voices.forEach(v => {
+      html += audioCard(v.key + ' (' + v.descriptor + ')', v.color, 'samples/ab/voice_' + v.key + '.wav');
+    });
+    html += '</div></div>';
+    c.innerHTML = html;
+  })();
+
+  // ----- Director's Notes -----
+  (function() {
+    const pairs = [
+      {
+        id: 'empathetic',
+        emotion: 'Empathetic',
+        transcript: 'I\'m sorry to hear about that. Let me see what I can do.',
+        directedSummary: 'Audio Profile: friendly young female · Scene: customer frustrated about a delayed package · Notes: empathetic, calm, small pause after the apology, steady pace',
+      },
+      {
+        id: 'upbeat',
+        emotion: 'Upbeat',
+        transcript: 'Great news, your order is ready for pickup.',
+        directedSummary: 'Audio Profile: energetic young female · Scene: calling a customer with good news · Notes: genuine excitement, warm not bubbly, lift on "ready", slightly faster than neutral',
+      },
+    ];
+    const c = document.getElementById('directors-cards');
+    if (!c) return;
+    pairs.forEach(p => {
+      c.innerHTML += `<div class="card" style="margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">
+          <span class="chip chip-info">${p.emotion}</span>
+          <span style="font-size:13px;color:var(--text-muted);">Bare prompt (just the line) vs structured Director's Notes prompt</span>
+        </div>
+        <div style="font-size:14px;color:var(--text-dim);font-style:italic;margin:8px 0 14px;">Transcript (same in both): "${p.transcript}"</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;">
+          <div>
+            ${audioCard('Bare prompt', 'var(--plivo-blue)', 'samples/ab/dn_' + p.id + '_bare.wav')}
+            <div style="font-size:12.5px;color:var(--text-muted);margin-top:6px;">Just the transcript text, sent as-is.</div>
+          </div>
+          <div>
+            ${audioCard("With Director's Notes", 'var(--plivo-purple)', 'samples/ab/dn_' + p.id + '_directed.wav')}
+            <div style="font-size:12.5px;color:var(--text-muted);margin-top:6px;">${p.directedSummary}</div>
+          </div>
+        </div>
+      </div>`;
     });
   })();
 </script>
