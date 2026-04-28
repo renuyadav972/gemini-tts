@@ -399,6 +399,22 @@
     specific person in a specific moment; extreme tips into theatrical. The point isn't that
     extreme is good — it's that the prompt does meaningful work, and you choose how far to push.
   </p>
+
+  <h3 style="margin-top: 40px;">Direction can also add what the transcript doesn't contain</h3>
+  <p class="muted">
+    Everything above just shapes <i>delivery</i>. But because Gemini reads the prompt as
+    instructions rather than a phoneme map, you can also ask it to add things the transcript
+    never said — fillers like "um" and "hmm", breaths, brief restarts, hesitations. Same
+    voice (Charon), same transcript ("Your delivery window is between 4 and 6 PM today.").
+    Only the prompt changes.
+  </p>
+  <div id="fillers-cards"></div>
+  <p class="muted" style="margin-top: 18px; font-size: 13px;">
+    <b>What to listen for:</b> the bare version reads the line. The fillers version sounds
+    like someone glancing at a screen as they talk — small "um" or "hmm", a breath before
+    the numbers, maybe a tiny self-correction. Words appear that aren't in the transcript.
+    For voice agents, this is the single biggest lever for sounding human instead of TTS.
+  </p>
 </section>
 
 <!-- ===================== TAB: STATS ===================== -->
@@ -643,6 +659,30 @@
       html += `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
           <span class="chip ${s.chipClass}">${s.label}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);">${s.duration}</span>
+        </div>
+        <audio controls preload="metadata" style="width:100%;height:36px;" src="samples/ab/dn_${s.id}.wav"></audio>
+        <div style="font-size:12.5px;color:var(--text-muted);margin-top:10px;line-height:1.45;">${s.summary}</div>
+      </div>`;
+    });
+    html += '</div></div>';
+    c.innerHTML = html;
+  })();
+
+  // ----- Fillers / disfluency demo -----
+  (function() {
+    const c = document.getElementById('fillers-cards');
+    if (!c) return;
+    const cards = [
+      { id: 'bare',    label: 'Bare', color: 'var(--text-dim)', duration: '4.1s', summary: 'Just the transcript, no direction. The model reads exactly what is written.' },
+      { id: 'fillers', label: 'With fillers requested', color: 'var(--plivo-purple)', duration: '7.1s', summary: 'Direction asks for natural fillers, small hesitations, a breath before the numbers — without changing the factual content. The model embellishes the line as it speaks.' },
+    ];
+    let html = `<div class="card">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">`;
+    cards.forEach(s => {
+      html += `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span class="chip chip-info">${s.label}</span>
           <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);">${s.duration}</span>
         </div>
         <audio controls preload="metadata" style="width:100%;height:36px;" src="samples/ab/dn_${s.id}.wav"></audio>

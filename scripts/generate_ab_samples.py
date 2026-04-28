@@ -101,6 +101,24 @@ DIRECTORS_NOTES_GRADIENT = [
 ]
 
 
+# A separate demo: Director's Notes can also add CONTENT the transcript doesn't
+# contain — fillers, hesitations, breaths. This is the LLM-ness of the model.
+# Same voice and same transcript as the gradient; the prompt asks for natural
+# filler words and the model embellishes the line as it reads it.
+DN_FILLERS_PROMPT = (
+    "Audio Profile: Casual, conversational adult male, mid-30s, friendly American English. "
+    "Sounds like he is checking information as he speaks, not reciting from a script.\n"
+    "Scene: He is on a phone call confirming a delivery time, glancing at his screen as he "
+    "talks. Relaxed, unhurried, a little chatty.\n"
+    "Director's Notes: Add natural conversational fillers and small hesitations where a real "
+    "person would have them — soft \"um\", \"uh\", a brief \"hmm\" while he checks. Maybe a "
+    "small breath before the numbers. Sound spontaneous, not rehearsed. Do NOT change the "
+    "factual content of the line — the delivery window is still 4 to 6 PM today.\n\n"
+    "#### TRANSCRIPT\n"
+    + DN_TRANSCRIPT
+)
+
+
 def request_generator(config_request, text):
     yield config_request
     yield texttospeech_v1.StreamingSynthesizeRequest(
@@ -165,6 +183,14 @@ def main():
             print(f"  [{step['label']:18}] {dur:.2f}s → {out.name}")
         except Exception as e:
             print(f"  [{step['label']:18}] FAILED: {e}")
+
+    print(f"\nDirector's Notes fillers (asks model to add ums/hmms/breaths):")
+    out = OUTPUT_DIR / "dn_fillers.wav"
+    try:
+        dur = synth(client, DN_VOICE, DN_FILLERS_PROMPT, out)
+        print(f"  [Fillers           ] {dur:.2f}s → {out.name}")
+    except Exception as e:
+        print(f"  [Fillers           ] FAILED: {e}")
 
     print(f"\nDone. Samples in {OUTPUT_DIR}")
 
