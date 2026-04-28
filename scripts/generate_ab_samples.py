@@ -46,30 +46,56 @@ VOICE_AB = [
 ]
 
 
-DIRECTORS_NOTES_PAIRS = [
+# Director's Notes gradient: same voice, same transcript, increasing direction.
+# Voice is Charon (Informative) — a flatter base than Aoede so direction has
+# more visible room to work. Line is deliberately neutral so the prompt
+# structure does the lifting.
+DN_VOICE = "Charon"
+DN_TRANSCRIPT = "Your delivery window is between 4 and 6 PM today."
+
+DIRECTORS_NOTES_GRADIENT = [
     {
-        "id": "empathetic",
-        "transcript": "I'm sorry to hear about that. Let me see what I can do.",
-        "directed_prompt": (
-            "Audio Profile: Young female, late 20s, friendly American English, slight warmth.\n"
-            "Scene: Maya is responding to a customer who is frustrated about a delayed package, "
-            "on a busy weekday afternoon.\n"
-            "Director's Notes: Genuinely empathetic, calm, confident. A small pause after "
-            "\"I'm sorry to hear about that\" to give the line emotional weight. Steady pace.\n\n"
+        "id": "bare",
+        "label": "Bare",
+        "prompt": DN_TRANSCRIPT,
+    },
+    {
+        "id": "minor",
+        "label": "Minor direction",
+        "prompt": (
+            "Audio Profile: Friendly, calm.\n"
+            "Director's Notes: A touch warmer than neutral, slight emphasis on \"today\".\n\n"
             "#### TRANSCRIPT\n"
-            "I'm sorry to hear about that. Let me see what I can do."
+            + DN_TRANSCRIPT
         ),
     },
     {
-        "id": "upbeat",
-        "transcript": "Great news, your order is ready for pickup.",
-        "directed_prompt": (
-            "Audio Profile: Energetic young female, late 20s, friendly American English.\n"
-            "Scene: Calling a customer to share good news about their order being ready early.\n"
-            "Director's Notes: Genuine excitement, warm not bubbly. Clear emphasis on "
-            "\"Great news\" and \"ready\". Slightly faster than neutral pace, lifting on \"ready\".\n\n"
+        "id": "major",
+        "label": "Major direction",
+        "prompt": (
+            "Audio Profile: Calm, confident dispatcher in his mid-30s, American English. "
+            "Reassuring, never rushed.\n"
+            "Scene: He is calling an older customer who specifically asked him to confirm "
+            "the delivery time clearly. The customer is hard of hearing.\n"
+            "Director's Notes: Slow and deliberate. Brief pause after \"window\". Emphasize "
+            "the numbers clearly: \"four ... and six P.M.\" Reassuring, kind, unhurried.\n\n"
             "#### TRANSCRIPT\n"
-            "Great news, your order is ready for pickup."
+            + DN_TRANSCRIPT
+        ),
+    },
+    {
+        "id": "extreme",
+        "label": "Extreme direction",
+        "prompt": (
+            "Audio Profile: Late-night noir narrator. Slow, weighty, contemplative. "
+            "Each phrase carries gravity.\n"
+            "Scene: A dim, empty room. Rain on the window. He is reading what should be "
+            "a routine delivery confirmation, but every word lands like a verdict.\n"
+            "Director's Notes: Cinematic. Long pauses between phrases. Heavy emphasis. "
+            "Almost whispered intensity at moments. Each number drops with weight: "
+            "\"four ... and six ... P.M.\" The word \"today\" feels final.\n\n"
+            "#### TRANSCRIPT\n"
+            + DN_TRANSCRIPT
         ),
     },
 ]
@@ -130,16 +156,15 @@ def main():
         except Exception as e:
             print(f"  [{voice_name:8}] FAILED: {e}")
 
-    print("\nDirector's Notes A/B (same transcript, bare vs directed):")
-    voice_for_dn = "Aoede"
-    for pair in DIRECTORS_NOTES_PAIRS:
-        for kind, text in [("bare", pair["transcript"]), ("directed", pair["directed_prompt"])]:
-            out = OUTPUT_DIR / f"dn_{pair['id']}_{kind}.wav"
-            try:
-                dur = synth(client, voice_for_dn, text, out)
-                print(f"  [{pair['id']:12} / {kind:8}] {dur:.2f}s → {out.name}")
-            except Exception as e:
-                print(f"  [{pair['id']:12} / {kind:8}] FAILED: {e}")
+    print(f"\nDirector's Notes gradient ({DN_VOICE}, same line, increasing direction):")
+    print(f"  Line: \"{DN_TRANSCRIPT}\"\n")
+    for step in DIRECTORS_NOTES_GRADIENT:
+        out = OUTPUT_DIR / f"dn_{step['id']}.wav"
+        try:
+            dur = synth(client, DN_VOICE, step["prompt"], out)
+            print(f"  [{step['label']:18}] {dur:.2f}s → {out.name}")
+        except Exception as e:
+            print(f"  [{step['label']:18}] FAILED: {e}")
 
     print(f"\nDone. Samples in {OUTPUT_DIR}")
 

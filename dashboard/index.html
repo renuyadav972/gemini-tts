@@ -383,15 +383,22 @@
 
 <!-- ===================== TAB: DIRECTOR'S NOTES ===================== -->
 <section id="directors" class="tab-panel" role="tabpanel">
-  <h3 style="margin-top: 0;">Same transcript, bare prompt vs structured prompt</h3>
+  <h3 style="margin-top: 0;">Same voice, same line. Direction dialed up step by step.</h3>
   <p class="muted">
-    Director's Notes is Gemini's structured prompt format for shaping delivery.
-    The transcript text is identical between bare and directed; only the surrounding
-    <b>Audio Profile</b>, <b>Scene</b>, and <b>Director's Notes</b> sections differ. The
-    <code>#### TRANSCRIPT</code> delimiter tells the model where instructions end and the
-    line to speak begins — without it, the model can read your stage directions aloud.
+    Director's Notes is Gemini's structured prompt format for shaping delivery. The voice (Charon,
+    "Informative") and the transcript (<i>"Your delivery window is between 4 and 6 PM today."</i>)
+    are identical across all four samples. Only the surrounding <b>Audio Profile</b>, <b>Scene</b>,
+    and <b>Director's Notes</b> sections change — none, a little, a lot, then pushed to the limit.
+    The <code>#### TRANSCRIPT</code> delimiter separates direction from the line to speak; without
+    it, the model can read your stage directions aloud.
   </p>
   <div id="directors-cards"></div>
+  <p class="muted" style="margin-top: 18px; font-size: 13px;">
+    <b>What to listen for:</b> pacing slows, pauses lengthen, emphasis lands on different words
+    as direction grows. Bare is generic; minor adds a slight warmth; major makes it sound like a
+    specific person in a specific moment; extreme tips into theatrical. The point isn't that
+    extreme is good — it's that the prompt does meaningful work, and you choose how far to push.
+  </p>
 </section>
 
 <!-- ===================== TAB: STATS ===================== -->
@@ -591,43 +598,59 @@
     c.innerHTML = html;
   })();
 
-  // ----- Director's Notes -----
+  // ----- Director's Notes gradient -----
   (function() {
-    const pairs = [
+    const steps = [
       {
-        id: 'empathetic',
-        emotion: 'Empathetic',
-        transcript: 'I\'m sorry to hear about that. Let me see what I can do.',
-        directedSummary: 'Audio Profile: friendly young female · Scene: customer frustrated about a delayed package · Notes: empathetic, calm, small pause after the apology, steady pace',
+        id: 'bare',
+        label: 'Bare',
+        chipClass: 'chip-info',
+        color: 'var(--text-dim)',
+        duration: '4.1s',
+        summary: 'No prompt structure. Just the transcript sent as-is.',
       },
       {
-        id: 'upbeat',
-        emotion: 'Upbeat',
-        transcript: 'Great news, your order is ready for pickup.',
-        directedSummary: 'Audio Profile: energetic young female · Scene: calling a customer with good news · Notes: genuine excitement, warm not bubbly, lift on "ready", slightly faster than neutral',
+        id: 'minor',
+        label: 'Minor direction',
+        chipClass: 'chip-info',
+        color: 'var(--plivo-cyan)',
+        duration: '5.0s',
+        summary: 'Audio Profile: friendly, calm. Notes: a touch warmer, slight emphasis on "today".',
+      },
+      {
+        id: 'major',
+        label: 'Major direction',
+        chipClass: 'chip-info',
+        color: 'var(--plivo-blue)',
+        duration: '6.5s',
+        summary: 'Audio Profile: calm dispatcher mid-30s · Scene: confirming the time for an older customer who is hard of hearing · Notes: slow, deliberate, brief pause after "window", emphasize the numbers, kind and unhurried.',
+      },
+      {
+        id: 'extreme',
+        label: 'Extreme direction',
+        chipClass: 'chip-warn',
+        color: 'var(--plivo-purple)',
+        duration: '10.2s',
+        summary: 'Audio Profile: late-night noir narrator · Scene: dim room, rain on the window, every word a verdict · Notes: cinematic, long pauses, heavy emphasis, almost whispered intensity.',
       },
     ];
     const c = document.getElementById('directors-cards');
     if (!c) return;
-    pairs.forEach(p => {
-      c.innerHTML += `<div class="card" style="margin-bottom:14px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">
-          <span class="chip chip-info">${p.emotion}</span>
-          <span style="font-size:13px;color:var(--text-muted);">Bare prompt (just the line) vs structured Director's Notes prompt</span>
+    let html = `<div class="card">
+      <div style="font-size:14px;color:var(--text-dim);font-style:italic;margin-bottom:14px;">Transcript: "Your delivery window is between 4 and 6 PM today." — Charon (Informative)</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">`;
+    steps.forEach(s => {
+      html += `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span class="chip ${s.chipClass}">${s.label}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);">${s.duration}</span>
         </div>
-        <div style="font-size:14px;color:var(--text-dim);font-style:italic;margin:8px 0 14px;">Transcript (same in both): "${p.transcript}"</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;">
-          <div>
-            ${audioCard('Bare prompt', 'var(--plivo-blue)', 'samples/ab/dn_' + p.id + '_bare.wav')}
-            <div style="font-size:12.5px;color:var(--text-muted);margin-top:6px;">Just the transcript text, sent as-is.</div>
-          </div>
-          <div>
-            ${audioCard("With Director's Notes", 'var(--plivo-purple)', 'samples/ab/dn_' + p.id + '_directed.wav')}
-            <div style="font-size:12.5px;color:var(--text-muted);margin-top:6px;">${p.directedSummary}</div>
-          </div>
-        </div>
+        <audio controls preload="metadata" style="width:100%;height:36px;" src="samples/ab/dn_${s.id}.wav"></audio>
+        <div style="font-size:12.5px;color:var(--text-muted);margin-top:10px;line-height:1.45;">${s.summary}</div>
       </div>`;
     });
+    html += '</div></div>';
+    c.innerHTML = html;
   })();
 </script>
 
