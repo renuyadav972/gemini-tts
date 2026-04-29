@@ -400,27 +400,29 @@
     extreme is good — it's that the prompt does meaningful work, and you choose how far to push.
   </p>
 
-  <h3 style="margin-top: 40px;">Fillers and hesitations: write them in</h3>
+  <h3 style="margin-top: 40px;">What didn't work: disfluencies</h3>
   <p class="muted">
-    Voice agents that sound human use disfluencies — "um", "uh", a small "hmm", a breath
-    while they check. We first tried asking Director's Notes to <i>add</i> these naturally
-    via a casual scene and "include filler words" instructions. The model shaped pacing
-    instead — slower delivery, longer pauses, but no new words. The reliable approach
-    is simpler: write the fillers directly into the transcript. Gemini reads them as a
-    person would, not as text-to-speech reading words on a page.
+    Voice agents that sound human use natural fillers — "um", "uh", a small "hmm", a breath
+    while they check. We tried both documented approaches with Gemini. Neither produced
+    natural-sounding hesitation.
   </p>
   <p class="muted" style="font-size: 13px;">
-    Both samples below are Aoede ("Breezy") with no Audio Profile or Scene wrapper —
-    just the transcript sent through. The bare transcript is on the left; the same line
-    with fillers written in is on the right. Voice and direction are identical; only the
-    transcript text differs.
+    <b>Approach 1 — ask Director's Notes to add fillers.</b> A casual scene, an Audio Profile
+    of someone checking information as they speak, and explicit "include 'um' and 'uh'"
+    instructions. The model shaped pacing instead. It slowed down, added pauses — but no
+    new words.
+    <br><br>
+    <b>Approach 2 — write fillers into the transcript.</b> Same voice (Aoede), no prompt
+    structure, just the line with "Um, let me check..." and ", uh," inserted. The model
+    pronounced "um" and "uh" as words with awkward pauses around them, not as the
+    vocalizations a person would actually produce. Listen below.
   </p>
   <div id="fillers-cards"></div>
   <p class="muted" style="margin-top: 18px; font-size: 13px;">
-    <b>What to listen for:</b> the fillers version should sound like someone genuinely
-    pausing to think, not a robot saying "um" awkwardly. The "uh" between commas should
-    feel placed, not jarring. This is where Gemini outpaces older TTS — phoneme engines
-    pronouncing "um" tend to sound like the word; Gemini delivers it as the sound.
+    <b>The takeaway.</b> Direction shapes delivery; transcript controls content. To get
+    natural disfluencies you'd need either an audio-tag mechanism the docs don't currently
+    expose, or to engineer them in your pipeline. For voice agents that need human-sounding
+    fillers today, plan to add them yourself.
   </p>
 </section>
 
@@ -692,10 +694,10 @@
       {
         id: 'fillers',
         label: 'Fillers in transcript',
-        color: 'var(--plivo-purple)',
+        color: 'var(--warn)',
         duration: '7.6s',
         transcript: 'Um, let me check… your delivery window is, uh, between 4 and 6 PM today.',
-        summary: 'Same voice on the same line with fillers written into the transcript. No prompt structure — just the text. The model delivers the "um" and "uh" as natural pauses, not as the words themselves.',
+        summary: 'Same voice with "um" and "uh" written in. The model reads them as words with stretched pauses — closer to a speaker who is dragging out the literal word "um" than to a person genuinely pausing to think.',
       },
     ];
     let html = `<div class="card">
