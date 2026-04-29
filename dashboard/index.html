@@ -400,20 +400,25 @@
     extreme is good — it's that the prompt does meaningful work, and you choose how far to push.
   </p>
 
-  <h3 style="margin-top: 40px;">Direction can also add what the transcript doesn't contain</h3>
+  <h3 style="margin-top: 40px;">Fillers and hesitations: write them in</h3>
   <p class="muted">
-    Everything above just shapes <i>delivery</i>. But because Gemini reads the prompt as
-    instructions rather than a phoneme map, you can also ask it to add things the transcript
-    never said — fillers like "um" and "hmm", breaths, brief restarts, hesitations. Same
-    voice (Charon), same transcript ("Your delivery window is between 4 and 6 PM today.").
-    Only the prompt changes.
+    Voice agents that sound human use disfluencies — "um", "uh", a small "hmm", a breath
+    while they check. We first tried asking Director's Notes to <i>add</i> these naturally
+    via a casual scene and "include filler words" instructions. The model shaped pacing
+    instead — slower delivery, longer pauses, but no new words. The reliable approach
+    is simpler: write the fillers directly into the transcript. Gemini reads them as a
+    person would, not as text-to-speech reading words on a page.
+  </p>
+  <p class="muted" style="font-size: 13px;">
+    Both samples below are Aoede ("Breezy"). The bare transcript is on the left; the
+    transcript with fillers is on the right.
   </p>
   <div id="fillers-cards"></div>
   <p class="muted" style="margin-top: 18px; font-size: 13px;">
-    <b>What to listen for:</b> the bare version reads the line. The fillers version sounds
-    like someone glancing at a screen as they talk — small "um" or "hmm", a breath before
-    the numbers, maybe a tiny self-correction. Words appear that aren't in the transcript.
-    For voice agents, this is the single biggest lever for sounding human instead of TTS.
+    <b>What to listen for:</b> the fillers version should sound like someone genuinely
+    pausing to think, not a robot saying "um" awkwardly. The "uh" between commas should
+    feel placed, not jarring. This is where Gemini outpaces older TTS — phoneme engines
+    pronouncing "um" tend to sound like the word; Gemini delivers it as the sound.
   </p>
 </section>
 
@@ -674,8 +679,22 @@
     const c = document.getElementById('fillers-cards');
     if (!c) return;
     const cards = [
-      { id: 'bare',    label: 'Bare', color: 'var(--text-dim)', duration: '4.1s', summary: 'Just the transcript, no direction. The model reads exactly what is written.' },
-      { id: 'fillers', label: 'With fillers requested', color: 'var(--plivo-purple)', duration: '7.1s', summary: 'Direction asks for natural fillers, small hesitations, a breath before the numbers — without changing the factual content. The model embellishes the line as it speaks.' },
+      {
+        id: 'fillers_bare',
+        label: 'Bare transcript',
+        color: 'var(--text-dim)',
+        duration: '4.1s',
+        transcript: 'Your delivery window is between 4 and 6 PM today.',
+        summary: 'Clean transcript, no fillers, no direction. Reads as written.',
+      },
+      {
+        id: 'fillers',
+        label: 'Fillers in transcript',
+        color: 'var(--plivo-purple)',
+        duration: '8.2s',
+        transcript: 'Um, let me check… your delivery window is, uh, between 4 and 6 PM today.',
+        summary: 'Same line with natural fillers written into the transcript. Light direction asks the model to read it casually, as if glancing at a screen.',
+      },
     ];
     let html = `<div class="card">
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">`;
@@ -686,7 +705,8 @@
           <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);">${s.duration}</span>
         </div>
         <audio controls preload="metadata" style="width:100%;height:36px;" src="samples/ab/dn_${s.id}.wav"></audio>
-        <div style="font-size:12.5px;color:var(--text-muted);margin-top:10px;line-height:1.45;">${s.summary}</div>
+        <div style="font-size:12.5px;color:var(--text-dim);font-style:italic;margin-top:10px;">"${s.transcript}"</div>
+        <div style="font-size:12.5px;color:var(--text-muted);margin-top:6px;line-height:1.45;">${s.summary}</div>
       </div>`;
     });
     html += '</div></div>';
