@@ -410,8 +410,10 @@
     person would, not as text-to-speech reading words on a page.
   </p>
   <p class="muted" style="font-size: 13px;">
-    Both samples below are Aoede ("Breezy"). The bare transcript is on the left; the
-    transcript with fillers is on the right.
+    Both samples below are Aoede ("Breezy") with no Audio Profile or Scene wrapper —
+    just the transcript sent through. The bare transcript is on the left; the same line
+    with fillers written in is on the right. Voice and direction are identical; only the
+    transcript text differs.
   </p>
   <div id="fillers-cards"></div>
   <p class="muted" style="margin-top: 18px; font-size: 13px;">
@@ -691,9 +693,9 @@
         id: 'fillers',
         label: 'Fillers in transcript',
         color: 'var(--plivo-purple)',
-        duration: '8.2s',
+        duration: '7.6s',
         transcript: 'Um, let me check… your delivery window is, uh, between 4 and 6 PM today.',
-        summary: 'Same line with natural fillers written into the transcript. Light direction asks the model to read it casually, as if glancing at a screen.',
+        summary: 'Same voice on the same line with fillers written into the transcript. No prompt structure — just the text. The model delivers the "um" and "uh" as natural pauses, not as the words themselves.',
       },
     ];
     let html = `<div class="card">
